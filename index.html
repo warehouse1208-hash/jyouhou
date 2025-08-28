@@ -40,15 +40,18 @@
         #setup-header {
             margin-bottom: 20px;
         }
-        #setup-header img {
-            max-width: 80%;
-            height: auto;
-            margin-bottom: 10px;
+        #setup-header h1.school-name {
+             font-family: 'Garamond', 'Times New Roman', serif;
+             font-size: 2.5em;
+             color: #003366; /* 濃紺 */
+             margin: 10px 0 5px 0;
+             border-bottom: none;
         }
         #setup-header p {
             font-size: 1.1em;
             color: #d9534f;
             font-weight: bold;
+            margin-top: 0;
         }
         #question {
             font-size: 1.25em;
@@ -189,7 +192,7 @@
         }
         .print-question-block {
             margin-top: 12px;
-            font-size: 9.5pt; /* 少しフォントを小さくして調整 */
+            font-size: 9.5pt;
         }
         .print-question-block p {
             margin: 0;
@@ -237,7 +240,7 @@
 <div class="container">
     <div id="setup">
         <div id="setup-header">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAAAAAXNSR0IArs4c6QAAIABJREFUeF7snQeYFNV1/z/vTA/pSRBCGgJCSElVVAREBBERuyAu2FtERF0XRRHdimARxKoCi+C+u64gKogoqaiIqJISghBCSDvpvfP+M1/X3T19M72zAiE83/f1cM7OzjTz7szu+c53vvOdDUY01w8aJcE8yYQ1CAn9aJgEy9rA+q/9pB7GjN2wF5+pD1O5G3IeI2cxd5xW/6z/Wf/a1m8P3A+J70mI35L4nsT4LpMBeTKF8mXf8T/5hP/Ld+wH/m0/8t3681uVn9jMhLzJSS/LKE/L+E7L2E7P2E47/7U/b+UvP+U/b8k77+n7P2n5/2n7/2n/7mn7Pmn58Wn5fmn/8Wn7/mn/8Wn/8mn/+Wn/+Wn/+mn/8mn/+Wn/+Gn/+mX/+Gn/+mn/+Gn/+Gn/+Wn/+mH/+mX/+HH/+mX/+Gn/5HH/+HH/8Gn/+mH+A8c0R6O6G/rRj1iA27JkLz7hO69xOm9xPO+xPO/5eU/y85719y3r/kvH/Jef+S8/4l5/1LzvuXnPenP+9Pe96f/rx/6fP/pc/+lz/6X/7of/kj/+WP/p/Y/5/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/t-logo.png" alt="KOKOKU HIGH SCHOOL Logo">
+            <h1 class="school-name">KOKOKU HIGH SCHOOL</h1>
             <p>ITビジネス科オリジナル</p>
         </div>
         <h1>全商情報処理検定<br>小テストジェネレーター</h1>
@@ -458,7 +461,6 @@
         const today = new Date();
         const dateString = `${today.getFullYear()} 年 ${today.getMonth() + 1} 月 ${today.getDate()} 日`;
         
-        // --- 問題用紙のHTMLを作成 ---
         let testSheetHtml = `<div class="print-page">`;
         testSheetHtml += `
             <div class="print-header">
@@ -477,7 +479,7 @@
             </table>`;
         
         testSheetHtml += `<div class="print-main-content">`;
-        let answersForSheet = {}; // 解答欄用に正解を保持
+        let answersForSheet = {}; 
         const optionsLabels = ['ア', 'イ', 'ウ', 'エ'];
 
         questionsForPdf.forEach((q, index) => {
@@ -485,6 +487,8 @@
             testSheetHtml += `<p><strong>第${index + 1}問.</strong> ${q.question}</p>`;
             testSheetHtml += `<ol class="print-options">`;
             
+            // PDF出力時も選択肢をランダムにする場合はこのまま
+            // 固定したい場合は、`shuffleArray`を削除
             const shuffledOptions = shuffleArray([...q.options]);
             
             shuffledOptions.forEach((opt, optIndex) => {
@@ -495,14 +499,14 @@
                 }
             });
             testSheetHtml += `</ol>`;
-            testSheetHtml += `<div class="answer-box">解答：(  )</div>`; // 解答を書き込む欄
+            // 解答を書き込む欄を追加
+            testSheetHtml += `<div class="answer-box">解答：(  )</div>`;
             testSheetHtml += `</div>`;
         });
         testSheetHtml += `</div>`;
-        testSheetHtml += `</div>`; // .print-page 終了
+        testSheetHtml += `</div>`;
 
 
-        // --- 解答用紙のHTMLを作成 ---
         let answerKeyHtml = `<div class="print-page">`;
          answerKeyHtml += `
             <div class="print-header">
@@ -511,7 +515,9 @@
         answerKeyHtml += `<div id="print-answers"><h3>解答</h3><ol>`;
         
         for (let i = 1; i <= 10; i++) {
-             answerKeyHtml += `<li>第${i}問: ${answersForSheet[i].label} (${answersForSheet[i].text})</li>`;
+             if (answersForSheet[i]) {
+                answerKeyHtml += `<li>第${i}問: ${answersForSheet[i].label} (${answersForSheet[i].text})</li>`;
+             }
         }
         answerKeyHtml += `</ol></div></div>`;
 
