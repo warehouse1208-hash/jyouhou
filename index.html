@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全商情報処理検定 小テスト (データベース版)</title>
+    <title>全商情報処理検定 直前チェックテスト【超・完全版】</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -31,9 +31,23 @@
             border-bottom: 2px solid #0056b3;
             padding-bottom: 10px;
             font-size: 1.8em;
+            margin-top: 20px; /* ロゴとの間隔調整 */
         }
         #setup, #quiz, #results {
             margin-top: 20px;
+        }
+        #setup-header {
+            margin-bottom: 20px;
+        }
+        #setup-header img {
+            max-width: 80%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        #setup-header p {
+            font-size: 1.1em;
+            color: #d9534f; /* ロゴの赤色に合わせる */
+            font-weight: bold;
         }
         #question {
             font-size: 1.25em;
@@ -58,7 +72,7 @@
             border-radius: 8px;
             transition: all 0.2s ease-in-out;
             text-align: left;
-            box-sizing: border-box; /* paddingを含めてwidthを100%に */
+            box-sizing: border-box;
         }
         .btn:hover {
             background-color: #f0f0f0;
@@ -149,9 +163,12 @@
 <body>
 
 <div class="container">
-    <h1>全商情報処理検定<br>ランダム10問テスト</h1>
-
     <div id="setup">
+        <div id="setup-header">
+            <img src="http://googleusercontent.com/file_content/1" alt="KOKOKU HIGH SCHOOL Logo">
+            <p>ITビジネス科オリジナル</p>
+        </div>
+        <h1>全商情報処理検定<br>直前チェックテスト【超・完全版】</h1>
         <h2>設定</h2>
         <p>部門と級を選択して、テストを開始してください。</p>
         <select id="department">
@@ -159,11 +176,8 @@
             <option value="programming">プログラミング部門</option>
         </select>
         <select id="level">
-            <option value="3">3級</option>
-            <option value="2">2級</option>
-            <option value="1">1級</option>
-        </select>
-        <button id="start-btn">テスト開始</button>
+            </select>
+        <button id="start-btn">ランダム10問テスト開始</button>
     </div>
 
     <div id="quiz" style="display:none;">
@@ -187,80 +201,115 @@
 </div>
 
 <script>
-    // 全範囲を網羅した問題データベース
+    // PDFの全範囲を元に作成した問題データベース
     const quizDatabase = [
         // 3級 ビジネス情報
-        { department: 'business', level: 3, question: 'CPUの処理速度を表す単位として、適切なものはどれか。', options: ['Hz', 'dpi', 'bps', 'byte'], answer: 'Hz', hint: 'クロック周波数とも関連します。', explanation: 'CPUの性能を示す指標の一つにクロック周波数があり、その単位としてHz（ヘルツ）が用いられます。' },
-        { department: 'business', level: 3, question: 'インターネット上の住所にあたるもので、「https://www...」のように表されるものは何か。', options: ['IPアドレス', 'ドメイン名', 'URL', 'DNS'], answer: 'URL', hint: 'Uniform Resource Locatorの略です。', explanation: 'URLはインターネット上のWebページやファイルの場所を特定するための記述方式です。' },
-        { department: 'business', level: 3, question: 'コンピュータの主記憶装置として用いられるメモリは何か。', options: ['ROM', 'RAM', 'HDD', 'SSD'], answer: 'RAM', hint: '電源を切ると記憶内容が消える揮発性メモリです。', explanation: 'RAM (Random Access Memory) は、CPUが直接読み書きできる作業用のメモリです。' },
-        { department: 'business', level: 3, question: 'マウスやキーボードなどのコンピュータに接続して使用する周辺機器の総称は何か。', options: ['ソフトウェア', 'ハードウェア', 'デバイス', 'OS'], answer: 'デバイス', hint: '入力装置や出力装置、補助記憶装置などがあります。', explanation: 'デバイスはコンピュータに接続される機器全般を指します。' },
-        { department: 'business', level: 3, question: '作成した文書などを印刷する装置は何か。', options: ['スキャナ', 'ディスプレイ', 'プリンタ', 'プロジェクタ'], answer: 'プリンタ', hint: 'インクジェット方式やレーザ方式などがあります。', explanation: 'プリンタはコンピュータからのデータを紙媒体に出力する装置です。' },
-        { department: 'business', level: 3, question: 'コンピュータウイルスからPCを保護するためのソフトウェアを何と呼ぶか。', options: ['ワープロソフト', '表計算ソフト', 'ウイルス対策ソフト', 'プレゼンテーションソフト'], answer: 'ウイルス対策ソフト', hint: 'セキュリティソフトとも呼ばれます。', explanation: 'ウイルス対策ソフトは、不正なプログラムの侵入を検知・駆除します。' },
-        { department: 'business', level: 3, question: 'Webページを閲覧するために利用するソフトウェアを何と呼ぶか。', options: ['Webサーバ', 'Webブラウザ', 'メールソフト', '検索エンジン'], answer: 'Webブラウザ', hint: 'Google ChromeやMicrosoft Edgeなどが有名です。', explanation: 'Webブラウザは、サーバから受信したHTMLファイルなどを解釈し、表示します。' },
-        { department: 'business', level: 3, question: '点（ピクセル）の集まりで表現される画像を何と呼ぶか。', options: ['ベクタ画像', 'ラスター画像', 'テキストデータ', '音声データ'], answer: 'ラスター画像', hint: 'ビットマップ画像とも呼ばれます。', explanation: 'ラスター画像は拡大すると画質が荒くなる特徴があります。' },
-        { department: 'business', level: 3, question: '他人の著作物を、許可なく利用する行為を禁じる法律は何か。', options: ['個人情報保護法', '不正アクセス禁止法', '著作権法', 'プロバイダ責任制限法'], answer: '著作権法', hint: '創作的な表現物が対象です。', explanation: '著作権法は、著作者の権利を守り、文化の発展に寄与することを目的としています。' },
-        { department: 'business', level: 3, question: '文字の大きさや色、書体などを設定することを何と呼ぶか。', options: ['フォント', '書式設定', 'レイアウト', 'インデント'], answer: '書式設定', hint: '文書を見やすくするための作業です。', explanation: '文字や段落の見た目を整えることを書式設定といいます。' },
-        { department: 'business', level: 3, question: 'ファイルやフォルダを階層的に管理する仕組みを何と呼ぶか。', options: ['ツリー構造', 'ネットワーク構造', 'データベース構造', 'リレーショナル構造'], answer: 'ツリー構造', hint: '木の枝が分かれていくような形に似ています。', explanation: 'ツリー構造により、多くのファイルやフォルダを目的別に分類し、整理・管理しやすくなります。' },
+        { department: 'business', level: 3, question: 'コンピュータを動作させるための基本的なソフトウェアは？', options: ['OS', 'アプリケーションソフトウェア', 'ウェアラブルコンピュータ', 'ユビキタス'], answer: 'OS', hint: 'Operating Systemの略です。', explanation: 'OSはコンピュータの基本的な管理や制御を行い、アプリケーションソフトウェアを動作させるための土台となります。' },
+        { department: 'business', level: 3, question: 'ワープロソフトや表計算ソフトなど、特定の目的のために作られたソフトウェアは？', options: ['アプリケーションソフトウェア', 'OS', 'IoT', 'SNS'], answer: 'アプリケーションソフトウェア', hint: '「応用」ソフトウェアとも言います。', explanation: 'アプリケーションソフトウェアは、利用者が特定の作業を行うために使用するソフトウェアです。' },
+        { department: 'business', level: 3, question: 'インターネット上のWebページやファイルの住所にあたるものは？', options: ['URL', 'IPアドレス', 'ドメイン名', 'プロトコル'], answer: 'URL', hint: 'Uniform Resource Locatorの略です。', explanation: 'URLは「https://...」のような形式で、インターネット上の情報の場所を指し示します。' },
+        { department: 'business', level: 3, question: 'Webページを閲覧するためのソフトウェアは？', options: ['Webブラウザ', 'Webサーバ', '検索エンジン', '電子メール'], answer: 'Webブラウザ', hint: 'Google ChromeやMicrosoft Edgeなどがあります。', explanation: 'Webブラウザは、Webサーバから送られてくる情報を解釈し、人間が見やすい形で表示するソフトウェアです。' },
+        { department: 'business', level: 3, question: '思想または感情を創作的に表現したものを保護する法律は？', options: ['著作権法', '個人情報保護法', '不正アクセス禁止法', 'プロバイダ責任制限法'], answer: '著作権法', hint: '音楽や小説、イラストなどが対象です。', explanation: '著作権法は、著作者の権利を守り、文化の発展を目的とする法律です。' },
+        { department: 'business', level: 3, question: '生存する個人に関する情報で、特定の個人を識別できるものを保護する法律は？', options: ['個人情報保護法', '著作権法', 'サイバーセキュリティ基本法', '特定商取引法'], answer: '個人情報保護法', hint: '氏名や生年月日などがこれにあたります。', explanation: '個人情報保護法は、個人の権利利益を保護することを目的として、個人情報の適正な取扱いについて定めています。' },
+        { department: 'business', level: 3, question: 'コンピュータの五大機能に含まれないものはどれ？', options: ['記憶', '入力', '出力', '通信'], answer: '通信', hint: 'コンピュータの基本的な働きを5つに分類したものです。', explanation: 'コンピュータの五大機能は「入力」「出力」「記憶」「制御」「演算」です。' },
+        { department: 'business', level: 3, question: 'コンピュータ本体を構成する電子回路や周辺機器などの物理的な実体の総称は？', options: ['ハードウェア', 'ソフトウェア', 'ファームウェア', 'シェアウェア'], answer: 'ハードウェア', hint: '手で触れる「固い(Hard)」ものです。', explanation: 'ハードウェアは、コンピュータシステムを構成する物理的な機器全般を指します。' },
+        { department: 'business', level: 3, question: 'コンピュータを制御するためのプログラムや命令の総称は？', options: ['ソフトウェア', 'ハードウェア', 'ヒューマンウェア', 'ミドルウェア'], answer: 'ソフトウェア', hint: '手で触れない「柔らかい(Soft)」ものです。', explanation: 'ソフトウェアには、OSのような基本ソフトウェアと、ワープロソフトなどの応用ソフトウェアがあります。' },
+        { department: 'business', level: 3, question: '「いつでも、どこでも、誰でも」コンピュータネットワークが利用できる環境のことを何というか？', options: ['ユビキタス', 'IoT', 'AI', 'クラウド'], answer: 'ユビキタス', hint: 'ラテン語で「至る所に存在する」という意味です。', explanation: 'ユビキタス社会とは、あらゆる場所にコンピュータが存在し、いつでもネットワークを利用できる社会のことです。' },
+        { department: 'business', level: 3, question: '身につけて持ち歩くことができるコンピュータを何というか？', options: ['ウェアラブルコンピュータ', 'パーソナルコンピュータ', 'サーバ', 'スマートフォン'], answer: 'ウェアラブルコンピュータ', hint: '「着用できる（Wearable）」コンピュータです。', explanation: 'スマートウォッチやスマートグラスなどがウェアラブルコンピュータの例です。' },
 
         // 2級 ビジネス情報
-        { department: 'business', level: 2, question: '複数のコンピュータを接続し、データや資源を共有するしくみを何と呼ぶか。', options: ['OS', 'データベース', 'ネットワーク', 'アプリケーション'], answer: 'ネットワーク', hint: '有線や無線で機器同士をつなぎます。', explanation: 'コンピュータネットワークにより、ファイル共有、プリンタ共有、電子メールの送受信などが可能になります。' },
-        { department: 'business', level: 2, question: '関係データベースにおいて、特定の1件のデータを識別するための一意な値を持つ項目を何と呼ぶか。', options: ['レコード', 'フィールド', '外部キー', '主キー'], answer: '主キー', hint: '英語ではPrimary Key（プライマリーキー）といいます。', explanation: '主キーを設定することで、データの重複を防ぎ、目的のデータを高速に検索できるようになります。' },
-        { department: 'business', level: 2, question: 'Webサーバとクライアント間の通信を暗号化するプロトコルは何か。', options: ['HTTP', 'FTP', 'SMTP', 'HTTPS'], answer: 'HTTPS', hint: 'HTTPにSecureのSがついたものです。', explanation: 'HTTPS (HTTP over SSL/TLS) を利用することで、通信内容が盗み見られることや改ざんされることを防ぎます。' },
-        { department: 'business', level: 2, question: 'システム開発において、利用者の視点で行う最終テストを何と呼ぶか。', options: ['単体テスト', '結合テスト', 'システムテスト', '受け入れテスト'], answer: '受け入れテスト', hint: '実際にシステムを利用する人が、要求通りに動作するかを確認します。', explanation: '受け入れテストは、開発されたシステムが発注者の要求仕様を満たしているかを検証する最終段階のテストです。' },
-        { department: 'business', level: 2, question: 'OSI基本参照モデルにおいて、物理的なデータの伝送を担当する層（第1層）は何か。', options: ['物理層', 'データリンク層', 'ネットワーク層', 'トランスポート層'], answer: '物理層', hint: 'ケーブルの材質やコネクタの形状などを定めています。', explanation: '物理層は、データをビットの電気信号に変換して、伝送媒体に流す役割を担っています。' },
-        { department: 'business', level: 2, question: '企業内で利用される、インターネット技術を利用した情報ネットワークを何と呼ぶか。', options: ['インターネット', 'イントラネット', 'エクストラネット', 'WAN'], answer: 'イントラネット', hint: '「内部の」という意味の接頭語 "Intra" がつきます。', explanation: 'イントラネットは、組織内の情報共有やコミュニケーションを円滑にするために構築されます。' },
-        { department: 'business', level: 2, question: '大量のデータを分析し、その中に潜むパターンや法則性を見つけ出す技術を何と呼ぶか。', options: ['データウェアハウス', 'データマイニング', 'ビッグデータ', 'AI'], answer: 'データマイニング', hint: '「採掘する」という意味のマイニングという言葉が使われています。', explanation: 'データマイニングは、マーケティング分野などで広く活用されています。' },
-        { department: 'business', level: 2, question: 'コンピュータやネットワークへの不正アクセスなどの脅威から、情報資産を守るための対策の総称は何か。', options: ['リスク管理', '情報倫理', '情報セキュリティ', 'デジタルデバイド'], answer: '情報セキュリティ', hint: '機密性、完全性、可用性の3要素が重要とされます。', explanation: '情報セキュリティは、技術的・物理的・人的な対策を含みます。' },
-        { department: 'business', level: 2, question: 'IPアドレスとドメイン名を相互に変換する仕組みを提供するサーバは何か。', options: ['Webサーバ', 'メールサーバ', 'ファイルサーバ', 'DNSサーバ'], answer: 'DNSサーバ', hint: 'Domain Name Systemの略です。', explanation: 'DNSサーバのおかげで、人間は分かりやすいドメイン名でWebサイトにアクセスできます。' },
-        { department: 'business', level: 2, question: 'システムの全体的な設計図を作成する、システム開発の上流工程は何か。', options: ['要件定義', '基本設計', '詳細設計', 'プログラミング'], answer: '基本設計', hint: '外部設計とも呼ばれます。', explanation: '基本設計では、システムの機能や画面など、利用者の目に見える部分の仕様を決定します。' },
-        { department: 'business', level: 2, question: '顧客情報を管理し、企業と顧客の関係性を強化するための経営手法・情報システムを何と呼ぶか。', options: ['ERP', 'SCM', 'CRM', 'SFA'], answer: 'CRM', hint: 'Customer Relationship Managementの略です。', explanation: 'CRMは、顧客満足度を向上させ、長期的な関係を築くことで企業の収益向上を目指します。' },
+        { department: 'business', level: 2, question: '企業の販売活動を効率化し支援するための情報システムは？', options: ['SFA', 'CRM', 'SCM', 'ERP'], answer: 'SFA', hint: 'Sales Force Automationの略です。', explanation: 'SFAは営業支援システムとも呼ばれ、営業担当者の業務を自動化・効率化し、売上向上を支援します。' },
+        { department: 'business', level: 2, question: '災害などが発生した際に、重要な業務を中断させないための事業継続計画を何というか？', options: ['BCP', 'BCM', 'リスクアセスメント', 'DR'], answer: 'BCP', hint: 'Business Continuity Planの略です。', explanation: 'BCPは、企業が自然災害やテロなどの緊急事態に遭遇した場合でも、事業資産の損害を最小限にとどめ、事業の継続あるいは早期復旧を可能とするために策定されます。' },
+        { department: 'business', level: 2, question: '関係データベースにおいて、行（レコード）を一位に識別するための列（フィールド）は？', options: ['主キー', '外部キー', '候補キー', 'スーパーキー'], answer: '主キー', hint: 'プライマリキーとも呼ばれます。', explanation: '主キーを設定することで、データの重複を防ぎ、高速な検索が可能になります。' },
+        { department: 'business', level: 2, question: 'LANとLANなどを接続し、ネットワーク間のデータの中継を行う通信機器は？', options: ['ルータ', 'ハブ', 'リピータ', 'モデム'], answer: 'ルータ', hint: '最適な経路(Route)を選択する機能があります。', explanation: 'ルータは、異なるネットワーク間でデータをやり取りする際の交通整理役を果たします。' },
+        { department: 'business', level: 2, question: '文字や画像など、形式の異なるデータを電子メールで扱うための規格は？', options: ['MIME', 'SMTP', 'POP', 'IMAP'], answer: 'MIME', hint: 'Multipurpose Internet Mail Extensionsの略です。', explanation: 'MIMEにより、日本語のテキストや画像ファイルなどを電子メールに添付して送受信できます。' },
+        { department: 'business', level: 2, question: 'データの暗号化と復号に異なる鍵（公開鍵と秘密鍵）を使用する暗号方式は？', options: ['公開鍵暗号方式', '共通鍵暗号方式', 'ハッシュ関数', 'デジタル署名'], answer: '公開鍵暗号方式', hint: '片方の鍵を一般に「公開」するのが特徴です。', explanation: '公開鍵暗号方式は、安全な通信路がなくても安全に鍵交換ができるという利点があります。' },
+        { department: 'business', level: 2, question: '顧客との関係を管理し、長期的な収益向上を目指す経営手法・システムは？', options: ['CRM', 'ERP', 'SFA', 'SCM'], answer: 'CRM', hint: 'Customer Relationship Managementの略です。', explanation: 'CRMは、顧客満足度を向上させ、顧客ロイヤルティを高めることを目的としています。' },
+        { department: 'business', level: 2, question: '原材料の調達から生産、販売に至るまでの一連の流れを統合的に管理する手法は？', options: ['SCM', 'POS', 'BI', 'CRM'], answer: 'SCM', hint: 'Supply Chain Managementの略です。', explanation: 'SCMは、情報の共有により、在庫の最適化や納期の短縮などを目指します。' },
+        { department: 'business', level: 2, question: 'システム開発において、データの処理方法やプログラムの処理内容を設計する工程で、外部設計の後の工程は？', options: ['内部設計', '外部設計', '要件定義', 'システムテスト'], answer: '内部設計', hint: '開発者側の視点で行う設計です。', explanation: '内部設計は、外部設計で決定された機能をプログラムにするために、必要とされる処理手順(アルゴリズム)などを詳細に設計する開発工程です。' },
+        { department: 'business', level: 2, question: 'LANケーブルを用いて各機器を接続するための集線装置は？', options: ['ハブ', 'ルータ', 'ゲートウェイ', 'モデム'], answer: 'ハブ', hint: '車輪の中心(hub)のように、ケーブルが集まります。', explanation: 'ハブは、LANにおけるネットワークケーブルを一つに接続する(まとめる)集線装置のことです。' },
+        { department: 'business', level: 2, question: 'ネットワークを介してファイルを転送するためのプロトコルは？', options: ['FTP', 'HTTP', 'SMTP', 'POP'], answer: 'FTP', hint: 'File Transfer Protocolの略です。', explanation: 'FTPは、Webページの更新や、ファイルのダウンロードなどを行う際に用いられるプロトコルです。' },
+        { department: 'business', level: 2, question: 'Webサイトを閲覧したブラウザ側の端末に、閲覧日時などの情報がファイルとして一時的に保存されるしくみは？', options: ['Cookie', 'MIME', 'ASP', 'NAT'], answer: 'Cookie', hint: 'お菓子のクッキーが由来の一つとされています。', explanation: 'Cookieにより、Webサイト側は訪問者の情報を記録し、ログイン状態の維持や広告表示の最適化などに利用します。' },
+        { department: 'business', level: 2, question: 'データベースから目的のデータを抽出したり、更新したりするための言語は？', options: ['SQL', 'HTML', 'Java', 'Python'], answer: 'SQL', hint: 'Structured Query Languageの略です。', explanation: 'SQLは、リレーショナルデータベースの操作に広く用いられる国際標準の言語です。' },
 
         // 1級 ビジネス情報
-        { department: 'business', level: 1, question: 'システムの開発工程で、利用者の要求を定義する最も初期の段階はどれか。', options: ['基本設計', '詳細設計', 'プログラミング', '要件定義'], answer: '要件定義', hint: 'システム化する範囲や、必要な機能を明確にする工程です。', explanation: '要件定義では、利用者がシステムに何を求めているのかを分析し、実現すべき機能や性能を定義します。' },
-        { department: 'business', level: 1, question: '情報セキュリティの3大要素（CIA）に含まれないものはどれか。', options: ['機密性', '完全性', '可用性', '信頼性'], answer: '信頼性', hint: 'CIAはそれぞれの英単語の頭文字です。', explanation: '情報セキュリティの3大要素は、機密性(Confidentiality)・完全性(Integrity)・可用性(Availability)です。' },
-        { department: 'business', level: 1, question: '企業の基幹業務を統合的に管理し、経営資源を最適化するためのシステムを何と呼ぶか。', options: ['CRM', 'SCM', 'ERP', 'BI'], answer: 'ERP', hint: 'Enterprise Resource Planningの略です。', explanation: 'ERPは、会計・人事・生産・販売などの情報を一元管理し、経営の意思決定を迅速化します。' },
-        { department: 'business', level: 1, question: '公開鍵暗号方式において、暗号化と復号に用いる2種類の鍵の組み合わせとして正しいものはどれか。', options: ['送信者の公開鍵と受信者の秘密鍵', '送信者の秘密鍵と受信者の公開鍵', '共通鍵と秘密鍵', 'パスワードとID'], answer: '送信者の秘密鍵と受信者の公開鍵', hint: '対になる鍵のペアを使います。', explanation: '送信者が「送信者の秘密鍵」で暗号化したデータは、対となる「送信者の公開鍵」でしか復号できず、これにより送信者のなりすましを防ぎます（デジタル署名）。' },
-        { department: 'business', level: 1, question: 'システム開発の手法で、工程を順に戻さず、滝の流れのように進めるモデルを何と呼ぶか。', options: ['スパイラルモデル', 'アジャイルモデル', 'プロトタイプモデル', 'ウォータフォールモデル'], answer: 'ウォータフォールモデル', hint: '大規模なシステム開発で用いられてきた伝統的な手法です。', explanation: 'ウォータフォールモデルは、各工程（要件定義→設計→実装→テスト）を順番に完了させていく開発モデルです。' },
-        { department: 'business', level: 1, question: 'IoTの説明として最も適切なものはどれか。', options: ['インターネット上の仮想空間', '人工知能を持つコンピュータ', '様々なモノがインターネットに接続される仕組み', 'クラウド上のデータ保存領域'], answer: '様々なモノがインターネットに接続される仕組み', hint: 'Internet of Thingsの略です。', explanation: 'IoTにより、家電製品や自動車、工場の機械などがインターネットに接続され、遠隔操作やデータ収集が可能になります。' },
-        { department: 'business', level: 1, question: 'コンピュータシステムに何らかの障害が発生した際に、待機させておいた別のシステムに即座に切り替えて処理を継続する仕組みを何と呼ぶか。', options: ['フェールソフト', 'フェールセーフ', 'フールプルーフ', 'フェールオーバー'], answer: 'フェールオーバー', hint: '可用性を高めるための重要な技術です。', explanation: 'フェールオーバーにより、サーバの故障などが発生しても、サービスを停止させることなく継続できます。' },
-        { department: 'business', level: 1, question: '企業のデータなどを分析・活用し、経営上の意思決定に役立てる手法や技術を何と呼ぶか。', options: ['AI', 'BI', 'IoT', 'DX'], answer: 'BI', hint: 'Business Intelligenceの略です。', explanation: 'BIツールは、専門家でなくてもデータを可視化・分析できるようにするソフトウェアで、迅速な経営判断を支援します。' },
-        { department: 'business', level: 1, question: 'ネットワークを流れるデータ（パケット）を監視し、不正な通信を検知・遮断するシステムは何か。', options: ['ウイルス対策ソフト', 'ファイアウォール', '侵入検知システム(IDS)', 'WAF'], answer: 'ファイアウォール', hint: '日本語では「防火壁」と訳されます。', explanation: 'ファイアウォールは、組織のネットワークの出入り口に設置され、内部ネットワークを外部の脅威から保護します。' },
-        { department: 'business', level: 1, question: 'システムに障害が発生しても、機能を縮小してでも最低限の動作を継続しようとする設計思想を何と呼ぶか。', options: ['フェールセーフ', 'フェールソフト', 'フォールトトレランス', 'フールプルーフ'], answer: 'フェールソフト', hint: '「柔らかく」壊れるというイメージです。', explanation: 'フェールソフトは、システムが完全に停止するのを避け、重要な機能だけでも維持し続けることを目指します。' },
-        { department: 'business', level: 1, question: 'SQLインジェクション攻撃への対策として有効なものはどれか。', options: ['パスワードの定期的な変更', '入力値の無害化（エスケープ処理）', 'OSのアップデート', 'SSL/TLSによる通信の暗号化'], answer: '入力値の無害化（エスケープ処理）', hint: 'Webアプリケーションの脆弱性を突く攻撃です。', explanation: 'SQLインジェクションは、入力フォームに不正なSQL文を注入する攻撃です。入力された文字列に含まれる特殊な記号を無害化することが根本的な対策となります。' },
-        
-        // 3級 プログラミング
-        { department: 'programming', level: 3, question: 'プログラムの中で、特定の処理を何度も繰り返し実行させる制御構造を何と呼ぶか。', options: ['順次実行', '条件分岐', '繰り返し（ループ）', 'サブルーチン'], answer: '繰り返し（ループ）', hint: '「for」や「while」などの命令が使われます。', explanation: '繰り返し構造を用いることで、同じような処理を効率的に記述することができます。' },
-        { department: 'programming', level: 3, question: 'プログラムの誤りや欠陥のことを、虫に例えて何と呼ぶか。', options: ['バグ', 'ウイルス', 'エラー', 'フリーズ'], answer: 'バグ', hint: 'この誤りを見つけて修正する作業は「デバッグ」と呼ばれます。', explanation: 'プログラムが意図した通りに動作しない原因となる誤りのことをバグと呼びます。' },
-        { department: 'programming', level: 3, question: 'プログラムの中で、数値や文字列などのデータを入れておくための「箱」のような役割を持つものを何というか。', options: ['定数', '変数', '配列', '関数'], answer: '変数', hint: '中に入れる値は後から変更することができます。', explanation: '変数は、データを一時的に記憶しておくためのもので、名前をつけて区別します。' },
-        { department: 'programming', level: 3, question: '「A > B」のように、二つの値を比較してその結果が真(true)か偽(false)かを判定する式を何と呼ぶか。', options: ['代入文', '演算子', '比較式（条件式）', 'コメント'], answer: '比較式（条件式）', hint: '条件分岐や繰り返しの条件として使われます。', explanation: '比較式（条件式）は、プログラムの流れを制御するために不可欠な要素です。' },
-        { department: 'programming', level: 3, question: 'コンピュータが直接理解できる、0と1の数字だけで構成された言語は何か。', options: ['ソースコード', 'アセンブリ言語', '機械語', '自然言語'], answer: '機械語', hint: '人間が直接読み書きすることは非常に困難です。', explanation: 'プログラミング言語で書かれたソースコードは、機械語に翻訳されてから実行されます。' },
-        { department: 'programming', level: 3, question: '複数のデータを、順番に並べて格納することができるデータ構造は何か。', options: ['変数', '定数', '配列', '構造体'], answer: '配列', hint: 'インデックス（添字）を使って各データにアクセスします。', explanation: '配列を使うと、同じ種類のたくさんのデータをまとめて扱うことができます。' },
-        { department: 'programming', level: 3, question: '人間が理解しやすいように書かれたプログラムの元となる文字列のことを何と呼ぶか。', options: ['オブジェクトコード', 'ソースコード', '実行ファイル', 'ライブラリ'], answer: 'ソースコード', hint: 'プログラマが記述するコードのことです。', explanation: 'ソースコードは、コンパイルやインタプリタによってコンピュータが実行できる形式に変換されます。' },
-        { department: 'programming', level: 3, question: '処理の流れを視覚的に表現するための図で、特定の記号を用いて処理内容や判断を示すものは何か。', options: ['フローチャート', 'ユースケース図', 'ER図', 'クラス図'], answer: 'フローチャート', hint: '日本語では「流れ図」とも呼ばれます。', explanation: 'フローチャートは、プログラムのアルゴリズムや処理手順を整理するために用いられます。' },
-        { department: 'programming', level: 3, question: 'プログラムの中で、処理の流れに関係なく、メモとして残しておくことができる記述を何と呼ぶか。', options: ['エラー', 'デバッグ', 'コメント', 'リテラル'], answer: 'コメント', hint: 'プログラムの実行時には無視されます。', explanation: 'コメントは、コードの意図を説明したり、後から見直す際の備忘録として利用されます。' },
-        { department: 'programming', level: 3, question: '「+」や「-」のように、計算を行うための記号を何と呼ぶか。', options: ['演算子', '変数', '関数', '命令'], answer: '演算子', hint: '算術演算子、比較演算子、論理演算子などがあります。', explanation: '演算子は、値に対して何らかの処理を行うための記号です。' },
+        { department: 'business', level: 1, question: '要件定義からテストまで、工程を分割して進める開発モデルで、原則として前の工程に戻らない手法は？', options: ['ウォータフォールモデル', 'プロトタイピングモデル', 'スパイラルモデル', 'アジャイルモデル'], answer: 'ウォータフォールモデル', hint: '滝が流れ落ちる様子に例えられています。', explanation: 'ウォータフォールモデルは、比較的大規模な開発に向いている伝統的な開発手法です。' },
+        { department: 'business', level: 1, question: '開発の初期段階で試作品を作成し、ユーザの評価をもとにシステムを開発する手法は？', options: ['プロトタイピングモデル', 'ウォータフォールモデル', 'スパイラルモデル', 'RAD'], answer: 'プロトタイピングモデル', hint: '「試作品」を英語で何と言うか考えてみましょう。', explanation: 'プロトタイピングモデルは、ユーザの要求を早期に具体化し、認識のズレを防ぐのに有効な開発モデルです。' },
+        { department: 'business', level: 1, question: 'システムを独立性の高い部分ごとに分割し、設計・プログラミング・テストの工程を繰り返して開発する手法は？', options: ['スパイラルモデル', 'ウォータフォールモデル', 'プロトタイピングモデル', 'エクストリームプログラミング'], answer: 'スパイラルモデル', hint: '螺旋階段のように、同じ工程を繰り返しながら開発を進めていくイメージです。', explanation: 'スパイラルモデルは、ユーザの要求の変更に柔軟に対応しやすい開発モデルです。' },
+        { department: 'business', level: 1, question: '開発したシステム全体が、設計どおりの機能を備えているかを確認する開発者側の最終テストは？', options: ['システムテスト', '単体テスト', '結合テスト', '受け入れテスト'], answer: 'システムテスト', hint: '「総合テスト」とも呼ばれます。', explanation: 'システムテストは、開発したシステム全体が要求された機能や性能を満たしているかを確認する、開発者側が行う最終テストです。' },
+        { department: 'business', level: 1, question: 'プログラムの内部構造には着目せず、データ入力に対する出力結果に注目して実施するテストは？', options: ['ブラックボックステスト', 'ホワイトボックステスト', '単体テスト', '結合テスト'], answer: 'ブラックボックステスト', hint: 'プログラムの内部が「黒い箱」で見えない状態を想定したテストです。', explanation: 'ブラックボックステストは、入力したデータに対して仕様書どおりの出力が得られるかを確認するテストです。' },
+        { department: 'business', level: 1, question: 'コンピュータシステムに関する評価指標であるRASISの「A」が示すものは？', options: ['可用性', '信頼性', '保守性', '安全性'], answer: '可用性', hint: '英語ではAvailabilityと書きます。', explanation: '可用性(Availability)は、一定期間にシステムが正常に使える時間の割合が長いことを示します。' },
+        { department: 'business', level: 1, question: 'コンピュータシステムが故障してから、完全に復旧するまでの平均時間は？', options: ['平均修復時間(MTTR)', '平均故障間隔(MTBF)', 'ターンアラウンドタイム', 'レスポンスタイム'], answer: '平均修復時間(MTTR)', hint: 'Repair(修復)にかかる時間です。', explanation: '平均修復時間(MTTR: Mean Time To Repair)は、値が小さいほど保守性が高いことを示します。' },
+        { department: 'business', level: 1, question: '障害が発生した場合でも、被害や障害を最小限に止め、安全性を保つしくみは？', options: ['フェールセーフ', 'フェールソフト', 'フォールトトレラント', 'フールプルーフ'], answer: 'フェールセーフ', hint: '失敗(Fail)しても安全(Safe)な状態を保つ、という意味です。', explanation: 'フェールセーフは、障害が発生した場合でも、被害や障害を最小限におさえて安全性が保てるようにするしくみです。' },
+        { department: 'business', level: 1, question: '誤った操作をしてもシステムの安全性と信頼性を保つしくみは？', options: ['フールプルーフ', 'フェールセーフ', 'フェールソフト', 'フォールトトレラント'], answer: 'フールプルーフ', hint: '愚かな(Fool)操作をしても防ぐ(Proof)という意味です。', explanation: 'フールプルーフは、ユーザが操作を誤ってもシステムの安全性と信頼性を保持するしくみです。' },
+        { department: 'business', level: 1, question: '複数のハードディスクに同じデータを書き込むことで信頼性を向上させるRAIDの方式は？', options: ['ミラーリング', 'ストライピング', 'RAID5', 'RAID6'], answer: 'ミラーリング', hint: '鏡(Mirror)のように同じデータを複製します。', explanation: 'ミラーリングはRAID1に相当し、1台のHDDに障害が起きてもシステムの稼働が可能となるため信頼性が向上します。' },
+        { department: 'business', level: 1, question: '異なるネットワーク間を接続し、パケットの経路選択機能などを持つ装置は？', options: ['ルータ', 'ハブ', 'ゲートウェイ', 'リピータ'], answer: 'ルータ', hint: '最適な道順(Route)を決める役割を持ちます。', explanation: 'ルータは、IPアドレスをもとにデータの行き先を認識して転送し、最適な経路を選択する機能を持つ装置です。' },
+        { department: 'business', level: 1, question: 'WebサーバとWebブラウザ間でHTML文書などを送受信するための通信規約は？', options: ['HTTP', 'FTP', 'SMTP', 'POP'], answer: 'HTTP', hint: 'URLの先頭によく使われる文字列です。', explanation: 'HTTP (HyperText Transfer Protocol) は、WebサーバとWebブラウザがデータをやり取りする際のルールを定めたものです。' },
+        { department: 'business', level: 1, question: 'メールサーバから電子メールを受信するために用いる通信規約は？', options: ['POP', 'SMTP', 'IMAP', 'FTP'], answer: 'POP', hint: '郵便局(Post Office)から手紙を受け取るイメージです。', explanation: 'POP (Post Office Protocol) は、メールサーバのメールボックスから利用者のコンピュータへメールをダウンロードするためのプロトコルです。' },
+        { department: 'business', level: 1, question: 'TCP/IPネットワーク上でコンピュータを識別するための番号は？', options: ['IPアドレス', 'MACアドレス', 'ポート番号', 'ドメイン名'], answer: 'IPアドレス', hint: 'インターネット上の住所とも言われます。', explanation: 'IPアドレスは、TCP/IPプロトコルを用いたネットワーク上で、個々のコンピュータを識別するために割り当てられる一意の番号です。' },
+        { department: 'business', level: 1, question: 'インターネットのグローバルIPアドレスとプライベートIPアドレスを相互に変換する技術は？', options: ['NAT', 'DNS', 'DHCP', 'VPN'], answer: 'NAT', hint: 'Network Address Translationの略です。', explanation: 'NATは、LAN内の複数のコンピュータが、一つのグローバルIPアドレスを共有してインターネットに接続することを可能にする技術です。' },
+        { department: 'business', level: 1, question: 'インターネットなどの外部ネットワークと内部ネットワークから隔離された区域（セグメント）のことは？', options: ['DMZ', 'VPN', 'LAN', 'WAN'], answer: 'DMZ', hint: '「非武装地帯」を意味する言葉の略です。', explanation: 'DMZ (DeMilitarized Zone) にWebサーバなどを設置することで、外部からの不正アクセスから内部ネットワークを保護します。' },
+        { department: 'business', level: 1, question: 'ドメイン名とIPアドレスを互いに変換するためのしくみは？', options: ['DNS', 'DHCP', 'NAT', 'HTTP'], answer: 'DNS', hint: 'Domain Name Systemの略です。', explanation: 'DNSのおかげで、人間は数字の羅列であるIPアドレスの代わりに、分かりやすいドメイン名でWebサイトにアクセスできます。' },
+        { department: 'business', level: 1, question: 'データの暗号化と復号に、異なる鍵（公開鍵と秘密鍵）を使用する暗号方式は？', options: ['公開鍵暗号方式', '共通鍵暗号方式', 'ハイブリッド暗号方式', '電子署名'], answer: '公開鍵暗号方式', hint: '片方の鍵を一般に「公開」するのが特徴です。', explanation: '公開鍵暗号方式は、暗号化には公開鍵、復号には秘密鍵という異なる鍵のペアを使用する暗号方式です。' },
+        { department: 'business', level: 1, question: 'Webサーバとブラウザ間の通信を暗号化し、安全に送受信するための技術で、URLが「https://」で始まるものは？', options: ['SSL/TLS', 'FTP', 'HTTP', 'DNS'], answer: 'SSL/TLS', hint: 'Secure Socket Layer / Transport Layer Security の略です。', explanation: 'SSL/TLSは、オンラインショッピングなどでやり取りする個人情報などを暗号化し、インターネット上で安全に送受信するための技術です。' },
+        { department: 'business', level: 1, question: 'コンピュータの利用状況やデータ通信の状況を記録したファイルは？', options: ['ログファイル', 'クッキー', 'キャッシュ', 'インデックス'], answer: 'ログファイル', hint: '航海日誌を意味する「logbook」が語源です。', explanation: 'ログファイルには、操作の日時や内容、送受信されたデータなどが記録され、トラブル発生時の原因調査などに利用されます。' },
+        { department: 'business', level: 1, question: '心理的な隙や行動のミスにつけ込み、情報通信技術を使わずに情報を不正に収集する手口の総称は？', options: ['ソーシャルエンジニアリング', 'SQLインジェクション', 'クロスサイトスクリプティング', 'フィッシング詐欺'], answer: 'ソーシャルエンジニアリング', hint: '「社会的（ソーシャル）」な人の弱みを利用する「工学（エンジニアリング）」です。', explanation: 'ソーシャルエンジニアリングには、電話でパスワードを聞き出すなりすましや、肩越しにパスワードを盗み見るショルダーハックなどがあります。' },
+        { department: 'business', level: 1, question: 'データベースと連携したWebアプリの脆弱性を利用して、不正なSQL文を実行させる攻撃は？', options: ['SQLインジェクション', 'クロスサイトスクリプティング', 'ソーシャルエンジニアリング', 'DoS攻撃'], answer: 'SQLインジェクション', hint: 'SQL文を「注入（インジェクション）」する攻撃です。', explanation: 'SQLインジェクション攻撃により、データベースの内容を不正に閲覧されたり、改ざん・削除されたりする危険性があります。' },
+        { department: 'business', level: 1, question: '「批判禁止」「自由奔放」「質より量」「結合便乗」の4原則で行われるアイディア発想法は？', options: ['ブレーンストーミング', 'KJ法', 'SWOT分析', 'PPM分析'], answer: 'ブレーンストーミング', hint: '脳（Brain）に嵐（Storm）を巻き起こすようにアイディアを出し合います。', explanation: 'ブレーンストーミングは、新しいアイディアを引き出すことを目的に行われる話し合いの技法です。' },
+        { department: 'business', level: 1, question: 'データの流れと処理の関係を、4つの記号（平行線、矢印、円、四角形）を用いて表す図は？', options: ['DFD', 'E-R図', 'パート図', 'フローチャート'], answer: 'DFD', hint: 'Data Flow Diagramの略です。', explanation: 'DFDは、システム開発において、業務のデータの流れを分析・設計するために用いられます。' },
+        { department: 'business', level: 1, question: '作業の開始から終了までの所要日数が最長となる経路を何と呼びますか？', options: ['クリティカルパス', 'パート図', 'アローダイアグラム', '最短経路'], answer: 'クリティカルパス', hint: 'この経路の遅れは、プロジェクト全体の遅れに直結する「致命的な（クリティカルな）」道筋です。', explanation: 'クリティカルパスはパート図において、全体のスケジュールに影響を与える最も重要な作業経路を指します。' },
+        { department: 'business', level: 1, question: '在庫管理などで用いられ、商品を重要度に応じてA・B・Cの3グループに分けて分析する方法は？', options: ['ABC分析', 'SWOT分析', 'PPM分析', '回帰分析'], answer: 'ABC分析', hint: 'アルファベットの最初の3文字が名前になっています。', explanation: 'ABC分析は、売上高や販売数量などから商品をランク付けし、重点的に管理すべき商品を明らかにするための手法です。' },
+        { department: 'business', level: 1, question: '企業の「強み・弱み・機会・脅威」の4要素に整理して市場環境を分析する手法は？', options: ['SWOT分析', 'PPM分析', 'ABC分析', '3C分析'], answer: 'SWOT分析', hint: '4つの要素の英語の頭文字をとった名称です。', explanation: 'SWOT分析は、Strength(強み)、Weakness(弱み)、Opportunity(機会)、Threat(脅威)の4つの観点から、企業の現状を分析し、今後の戦略を立てるために用いられます。' },
+        { department: 'business', level: 1, question: '自社の製品や事業を「市場成長率」と「市場占有率」から分析し、経営資源の配分を決定する手法は？', options: ['PPM分析', 'SWOT分析', 'ABC分析', 'ファイブフォース分析'], answer: 'PPM分析', hint: '製品を「花形」「金のなる木」「問題児」「負け犬」に分類します。', explanation: 'PPM分析 (Product Portfolio Management) は、多角的な事業を行う企業が、戦略的に経営資源を配分するために用いる手法です。' },
+        { department: 'business', level: 1, question: '企業の経営資源を一元的に管理・有効活用し、業務の効率化を図るための経営手法は？', options: ['ERP', 'CRM', 'BPR', 'SCM'], answer: 'ERP', hint: 'Enterprise Resource Planningの略です。', explanation: 'ERP (経営資源計画) は、経理・生産・販売・人事などの基幹業務を統合的に管理し、経営全体の最適化を目指します。' },
+        { department: 'business', level: 1, question: 'データベースにおいて、あるデータを処理しているとき、他からの更新などを制限してデータの整合性を保つしくみは？', options: ['排他制御', '共有ロック', 'デッドロック', 'トランザクション'], answer: '排他制御', hint: '他の処理を「排除」してデータを「制御」します。', explanation: '排他制御は、複数のトランザクションが同じデータに同時にアクセスした場合に、データの矛盾が生じないようにするための重要な機能です。' },
+        { department: 'business', level: 1, question: '排他制御を行った複数の処理が互いにロック解除待ちとなり、処理が進まなくなる状態は？', options: ['デッドロック', 'コミット', 'ロールバック', '専有ロック'], answer: 'デッドロック', hint: '「膠着状態」とも言います。', explanation: 'デッドロックは、複数の処理がお互いの処理が終わるのを待ち続け、永久に処理が進まなくなってしまう状態です。' },
+        { department: 'business', level: 1, question: '一連の更新処理の途中で問題が発生した場合、処理開始時点の状態にデータを戻すことは？', options: ['ロールバック', 'ロールフォワード', 'コミット', 'チェックポイント'], answer: 'ロールバック', hint: '処理を「後方へ転がす(Roll Back)」イメージです。', explanation: 'ロールバックは、ジャーナルファイルを用いてトランザクション処理開始時点の状態に戻し、データの整合性を保つ処理です。' },
+        { department: 'business', level: 1, question: 'データベース設計の初期段階で、業務内容を分析し、E-R図を作成する工程は？', options: ['概念設計', '論理設計', '物理設計', '実装'], answer: '概念設計', hint: 'システムの「コンセプト」を決める最初の段階です。', explanation: '概念設計は、データベースで何をどのように管理するかを大まかに定義する、データベース設計の最も上流の工程です。' },
+        { department: 'business', level: 1, question: 'E-R図において、一単位として扱われるデータのまとまりや対象物のことを何と呼びますか？', options: ['エンティティ', 'アトリビュート', 'リレーションシップ', 'カーディナリティ'], answer: 'エンティティ', hint: '日本語では「実体」と訳されます。', explanation: 'エンティティは、データベースとして表現すべき対象物のことで、論理設計の段階ではテーブルに相当します。' },
+        { department: 'business', level: 1, question: '「法令遵守」を意味し、企業が法律や条例、社会規範などを守って活動することは？', options: ['コンプライアンス', 'アライアンス', 'アウトソーシング', 'コアコンピタンス'], answer: 'コンプライアンス', hint: '近年、企業の社会的責任として非常に重要視されています。', explanation: 'コンプライアンスは、単に法律を守るだけでなく、企業倫理や社会貢献などを含めた広い意味で使われます。' },
+        { department: 'business', level: 1, question: '自社の業務の一部を、外部の専門業者に委託することは？', options: ['アウトソーシング', 'ハウジングサービス', 'ホスティングサービス', 'アライアンス'], answer: 'アウトソーシング', hint: '「外部（アウト）から資源（ソーシング）を調達する」という意味です。', explanation: 'アウトソーシングにより、企業は自社のコア業務に経営資源を集中させることができます。' },
+        { department: 'business', level: 1, question: 'インターネット経由で、アプリケーションソフトが稼働するためのプラットフォーム環境を提供するサービスは？', options: ['PaaS', 'SaaS', 'IaaS', 'ASP'], answer: 'PaaS', hint: 'Platform as a Service の略です。', explanation: 'PaaSを利用することで、開発者はOSやミドルウェアの管理を気にすることなく、アプリケーション開発に専念できます。' },
         
         // 2級 プログラミング
-        { department: 'programming', level: 2, question: 'ある処理をひとまとまりの部品として定義し、名前をつけて何度も呼び出せるようにしたものを何と呼ぶか。', options: ['変数', '配列', '関数（手続き）', '定数'], answer: '関数（手続き）', hint: '同じコードを何度も書く手間を省くことができます。', explanation: '関数（またはメソッド、サブルーチン）を利用することで、プログラムの構造が分かりやすくなり、再利用性も高まります。' },
-        { department: 'programming', level: 2, question: '「もしAならばBを実行し、そうでなければCを実行する」という処理は、どの制御構造にあたるか。', options: ['順次', '選択（分岐）', '繰り返し', '代入'], answer: '選択（分岐）', hint: '「if文」が代表的な命令です。', explanation: '条件によって処理の流れを変えることを選択（条件分岐）と呼びます。' },
-        { department: 'programming', level: 2, question: '関数を呼び出す際に渡す値のことを何と呼ぶか。', options: ['戻り値', '引数', '変数', '参照'], answer: '引数', hint: '関数に情報を与えるために使います。', explanation: '引数を使うことで、関数は様々なデータに対して同じ処理を行うことができ、汎用性が高まります。' },
-        { department: 'programming', level: 2, question: '関数が処理を終えた後、呼び出し元に返す値のことを何と呼ぶか。', options: ['戻り値', '引数', '変数', '参照'], answer: '戻り値', hint: '処理の結果を伝えるために使います。', explanation: '戻り値（返り値）によって、関数の実行結果を他の処理で利用することができます。' },
-        { department: 'programming', level: 2, question: 'プログラムの実行中に発生する予期せぬエラーのことを何と呼ぶか。', options: ['構文エラー', '論理エラー', '実行時エラー（例外）', 'コンパイルエラー'], answer: '実行時エラー（例外）', hint: 'ゼロ除算や、存在しないファイルを開こうとした場合などに発生します。', explanation: '実行時エラー（例外）が発生するとプログラムは強制終了することがあります。これを防ぐために例外処理という仕組みがあります。' },
-        { department: 'programming', level: 2, question: 'ある関数の中から、自分自身の関数を呼び出すことを何と呼ぶか。', options: ['継承', 'オーバーロード', '再帰呼び出し', 'ポリモーフィズム'], answer: '再帰呼び出し', hint: '階乗の計算など、特定のアルゴリズムを簡潔に記述できます。', explanation: '再帰呼び出しは、処理を繰り返し行うための一つの方法ですが、無限ループに陥らないように終了条件を正しく設定する必要があります。' },
+        { department: 'programming', level: 2, question: 'プログラムの中でデータを一時的に記憶するために、名前を付けた領域のことを何というか。', options: ['変数', '定数', '配列', '関数'], answer: '変数', hint: '中に入れる値が変化することからこの名前がついています。', explanation: '変数は、数値や文字列などのデータを入れておくための箱のようなものです。' },
+        { department: 'programming', level: 2, question: 'プログラムの処理の流れを、記号を用いて視覚的に表現した図を何というか。', options: ['フローチャート', 'E-R図', 'DFD', 'UML'], answer: 'フローチャート', hint: '「流れ図」とも呼ばれます。', explanation: 'フローチャートを使うことで、プログラムのアルゴリズム（処理手順）を分かりやすく整理できます。' },
+        { department: 'programming', level: 2, question: '特定の処理をひとまとめにし、名前を付けて何度も呼び出せるようにしたものを何というか。', options: ['関数', '変数', '引数', '戻り値'], answer: '関数', hint: '数学のf(x)のように、何かを入れると決まった処理をして結果を返します。', explanation: '関数を使うことで、同じコードを何度も書く手間が省け、プログラムが構造化されて分かりやすくなります。' },
+        { department: 'programming', level: 2, question: 'プログラムの誤りや不具合のことを、虫に例えて何と呼ぶか。', options: ['バグ', 'ウイルス', 'クラッシュ', 'エラー'], answer: 'バグ', hint: 'この虫を取り除く作業をデバッグと言います。', explanation: 'プログラムが設計者の意図通りに動かない原因となる誤りのことをバグと呼びます。' },
+        { department: 'programming', level: 2, question: '関数を呼び出す際に、その関数に渡す値のことを何というか。', options: ['引数', '戻り値', '変数', '仮引数'], answer: '引数', hint: '「ひきすう」と読みます。関数に情報を引き渡す値です。', explanation: '引数を使うことで、関数は様々なデータに対して同じ処理を行うことができ、汎用性が高まります。' },
+        { department: 'programming', level: 2, question: '関数が処理を終えた後、呼び出し元に返す値のことを何というか。', options: ['戻り値', '引数', '変数', 'スコープ'], answer: '戻り値', hint: '「かえりち」とも読みます。', explanation: '戻り値によって、関数の実行結果を他の処理で利用することができます。' },
+        { department: 'programming', level: 2, question: '同じ種類のデータを複数個、連続した領域に格納するためのデータ構造は？', options: ['配列', '変数', '構造体', 'リスト'], answer: '配列', hint: 'インデックス（添字）を使って各要素にアクセスします。', explanation: '配列を使うことで、多くのデータを効率的に管理できます。' },
+        { department: 'programming', level: 2, question: 'コンピュータに与える処理手順を、順序立てて記述したものを何というか。', options: ['アルゴリズム', 'プログラム', 'ソースコード', 'フローチャート'], answer: 'アルゴリズム', hint: '「算法」とも訳されます。', explanation: 'アルゴリズムは、特定の問題を解決するための計算手順や処理手順の集まりです。' },
+        { department: 'programming', level: 2, question: 'プログラムの誤りを見つけ出し、修正する作業を何というか。', options: ['デバッグ', 'コンパイル', 'コーディング', 'テスト'], answer: 'デバッグ', hint: 'バグ（虫）を取り除く(de)作業です。', explanation: 'デバッグは、プログラムが意図通りに動作しない原因（バグ）を特定し、取り除くための重要な工程です。' },
+        { department: 'programming', level: 2, question: 'プログラムの基本的な三つの制御構造に含まれないものは？', options: ['順次', '選択（分岐）', '繰り返し', '代入'], answer: '代入', hint: 'プログラムは基本的に上から下へ、条件によって分かれ、繰り返すことで成り立っています。', explanation: 'プログラムの基本制御構造は「順次」「選択（分岐）」「繰り返し」の３つです。代入は命令の一つですが、制御構造には分類されません。' },
+        { department: 'programming', level: 2, question: 'プログラムの実行中に発生する、予期しないエラーを何というか。', options: ['実行時エラー', '構文エラー', '論理エラー', 'コンパイルエラー'], answer: '実行時エラー', hint: '「例外」とも呼ばれます。', explanation: 'ゼロ除算や存在しないファイルへのアクセスなど、プログラムを実行してみないと発見できないエラーです。' },
 
         // 1級 プログラミング
-        { department: 'programming', level: 1, question: 'データとそれに対する操作を一つにまとめた「オブジェクト」を主体としてプログラムを設計する考え方を何と呼ぶか。', options: ['手続き型プログラミング', '構造化プログラミング', 'オブジェクト指向プログラミング', '関数型プログラミング'], answer: 'オブジェクト指向プログラミング', hint: '現実世界の「モノ」のように、データと振る舞いをセットで考えます。', explanation: 'オブジェクト指向は、カプセル化、継承、多様性（ポリモーフィズム）といった特徴を持ち、大規模開発に適しています。' },
-        { department: 'programming', level: 1, question: 'プログラムをコンピュータが実行できる機械語に一括して翻訳する方式のソフトウェアを何と呼ぶか。', options: ['インタプリタ', 'コンパイラ', 'アセンブラ', 'デバッガ'], answer: 'コンパイラ', hint: '翻訳（コンパイル）が完了すると、実行ファイルが生成されます。', explanation: 'コンパイラは、ソースコードをまとめて機械語に翻訳します。一方、一行ずつ翻訳しながら実行する方式をインタプリタと呼びます。' },
-        { department: 'programming', level: 1, question: 'オブジェクト指向において、既存のクラスの性質を受け継いで新しいクラスを作成する仕組みを何と呼ぶか。', options: ['カプセル化', '継承', 'ポリモーフィズム', 'インスタンス化'], answer: '継承', hint: '親子関係に例えられます。', explanation: '継承を利用することで、コードの再利用性を高め、効率的な開発が可能になります。元のクラスをスーパークラス（親クラス）、新しいクラスをサブクラス（子クラス）と呼びます。' },
-        { department: 'programming', level: 1, question: '同じ名前のメソッドでも、引数の型や数が異なれば、異なる処理を定義できるオブジェクト指向の機能を何と呼ぶか。', options: ['オーバーライド', 'オーバーロード', 'カプセル化', '抽象化'], answer: 'オーバーロード', hint: 'メソッドの多重定義とも呼ばれます。', explanation: 'オーバーロードにより、似たような機能を持つメソッドに同じ名前をつけることができ、プログラムの可読性が向上します。' },
-        { department: 'programming', level: 1, question: 'データを格納するキュー構造の特徴として正しいものはどれか。', options: ['最初に入れたデータが最初に出てくる（FIFO）', '最後に入れたデータが最初に出てくる（LIFO）', 'どのデータも均等な確率で取り出される', 'データはソートされた順序で格納される'], answer: '最初に入れたデータが最初に出てくる（FIFO）', hint: '行列の順番待ちと同じ仕組みです。', explanation: 'キューはFIFO(First-In, First-Out)のデータ構造です。一方、後入れ先出し(LIFO)のデータ構造をスタックと呼びます。' },
-        { department: 'programming', level: 1, question: 'アルゴリズムの計算量を評価する際に用いられる、データ量nが増加したときの処理時間の増え方を表す記法は何か。', options: ['UML', 'API', 'SDK', 'オーダー記法（O記法）'], answer: 'オーダー記法（O記法）', hint: 'O(n)やO(n^2)のように表記します。', explanation: 'オーダー記法を用いることで、アルゴリズムの効率を客観的に比較・評価することができます。' },
-        { department: 'programming', level: 1, question: '二つの要素を比較しながら、データを昇順または降順に並べ替える処理を一般に何と呼ぶか。', options: ['検索', 'ソート', 'マージ', 'ハッシュ'], answer: 'ソート', hint: 'バブルソートやクイックソートなどのアルゴリズムがあります。', explanation: 'ソートは、データを効率的に検索したり、見やすく整理したりするために不可欠な基本的なアルゴリズムです。' },
-        { department: 'programming', level: 1, question: 'テスト駆動開発(TDD)に関する説明として、最も適切なものはどれか。', options: ['実装コードを書いてからテストコードを書く', '最初にテストコードを書き、そのテストをパスするように実装を進める', 'テストは開発の最終工程でのみ行う', '利用者による受け入れテストを最優先する'], answer: '最初にテストコードを書き、そのテストをパスするように実装を進める', hint: 'Test-Driven Developmentの略です。', explanation: 'TDDは、先に満たすべき仕様をテストとして定義し、それをクリアする形で開発を進める手法で、品質の高いソフトウェアを効率的に開発することを目指します。' },
-        { department: 'programming', level: 1, question: 'あるクラスを元にして、実際にメモリ上に生成された実体のことを何と呼ぶか。', options: ['メソッド', 'プロパティ', 'インスタンス', 'テンプレート'], answer: 'インスタンス', hint: 'クラスは設計図、これは設計図を元に作られた「モノ」そのものです。', explanation: '一つのクラス（設計図）から、多数のインスタンス（実体）を生成することができます。このプロセスをインスタンス化と呼びます。' },
-        { department: 'programming', level: 1, question: 'サブクラスにおいて、スーパークラスで定義されたメソッドを、サブクラスの仕様に合わせて再定義することを何と呼ぶか。', options: ['オーバーロード', 'オーバーライド', 'コンストラクタ', 'デストラクタ'], answer: 'オーバーライド', hint: 'メソッドの上書きとも言えます。', explanation: 'オーバーライドにより、継承したメソッドの振る舞いをサブクラス固有のものに変更することができ、ポリモーフィズム（多様性）を実現する重要な仕組みです。' },
-        { department: 'programming', level: 1, question: 'ソフトウェアの機能や部品を外部から利用するための手順や規約の集合を何と呼ぶか。', options: ['SDK', 'API', 'IDE', 'GUI'], answer: 'API', hint: 'Application Programming Interfaceの略です。', explanation: 'APIを利用することで、他のソフトウェアの機能を自分のプログラムに組み込むことができ、開発を効率化できます。' }
+        { department: 'programming', level: 1, question: 'データとそれに対する手続きをひとまとめにした「オブジェクト」を基本単位としてプログラムを構成する考え方は？', options: ['オブジェクト指向', '構造化プログラミング', '手続き型プログラミング', '関数型プログラミング'], answer: 'オブジェクト指向', hint: '現実世界の「モノ」に例えて考えます。', explanation: 'オブジェクト指向は、カプセル化、継承、多様性などの特徴を持ち、大規模で複雑なソフトウェアの開発に適しています。' },
+        { department: 'programming', level: 1, question: '人間が書いたソースコードを、コンピュータが実行できる機械語に一括して翻訳するソフトウェアは？', options: ['コンパイラ', 'インタプリタ', 'アセンブラ', 'デバッガ'], answer: 'コンパイラ', hint: '翻訳(compile)するもの、という意味です。', explanation: 'コンパイラはプログラム全体を一度に翻訳して実行ファイルを生成します。一方、一行ずつ翻訳しながら実行する方式をインタプリタと呼びます。' },
+        { department: 'programming', level: 1, question: '既存のクラスの性質を受け継いで、新しいクラスを定義するオブジェクト指向のしくみは？', options: ['継承', 'カプセル化', 'ポリモーフィズム', 'インスタンス化'], answer: '継承', hint: '親から子へ性質が受け継がれる関係に似ています。', explanation: '継承（インヘリタンス）により、コードの再利用性が高まり、効率的な開発が可能になります。' },
+        { department: 'programming', level: 1, question: '同じ名前のメソッドでも、引数の型や数が異なれば、別のメソッドとして定義できるしくみは？', options: ['オーバーロード', 'オーバーライド', 'カプセル化', '抽象化'], answer: 'オーバーロード', hint: 'メソッドの多重定義とも呼ばれます。', explanation: 'オーバーロードにより、似た機能を持つメソッドに同じ名前を付けることができ、プログラムの可読性が向上します。' },
+        { department: 'programming', level: 1, question: '最初に入れたデータが最初に取り出される（FIFO）データ構造は？', options: ['キュー', 'スタック', 'リスト', 'ツリー'], answer: 'キュー', hint: '行列で順番待ちをするのと同じ原理です。', explanation: 'キューはFirst-In, First-Outのデータ構造です。一方、後入れ先出し（LIFO）のデータ構造をスタックと呼びます。' },
+        { department: 'programming', level: 1, question: '後から入れたデータが最初に取り出される（LIFO）データ構造は？', options: ['スタック', 'キュー', 'ヒープ', 'ツリー'], answer: 'スタック', hint: '積み重ねた（Stack）本を取り出すイメージです。', explanation: 'スタックはLast-In, First-Outのデータ構造です。一方、先入れ先出し（FIFO）のデータ構造をキューと呼びます。' },
+        { department: 'programming', level: 1, question: 'オブジェクトの内部構造を外部から隠蔽し、定められた手続きでのみ操作できるようにすることは？', options: ['カプセル化', '継承', '多様性', '抽象化'], answer: 'カプセル化', hint: '薬の「カプセル」のように中身を保護します。', explanation: 'カプセル化により、外部からの意図しないアクセスを防ぎ、オブジェクトの独立性と安全性を高めることができます。' },
+        { department: 'programming', level: 1, question: '親クラスで定義されたメソッドを、子クラスで再定義（上書き）することは？', options: ['オーバーライド', 'オーバーロード', 'インスタンス化', 'カプセル化'], answer: 'オーバーライド', hint: '親の機能を乗り越えて（override）上書きするイメージです。', explanation: 'オーバーライドは、ポリモーフィズム（多様性）を実現するための重要な仕組みです。' },
+        { department: 'programming', level: 1, question: '隣り合うデータを比較・交換しながら、全体のデータを整列させるアルゴリズムは？', options: ['バブルソート', 'クイックソート', 'マージソート', '選択ソート'], answer: 'バブルソート', hint: '泡（Bubble）が浮き上がるように、軽い（小さい）値が上に来るイメージです。', explanation: 'バブルソートはアルゴリズムが単純で理解しやすいですが、データ数が多いと処理速度が非常に遅くなる特徴があります。' },
+        { department: 'programming', level: 1, question: 'ある関数の中から自分自身を呼び出すことで、繰り返し処理を実現する手法は？', options: ['再帰呼び出し', '継承', 'オーバーロード', 'カプセル化'], answer: '再帰呼び出し', hint: '終了条件を設けないと無限ループに陥ります。', explanation: '再帰呼び出しは、特定の種類の問題を簡潔に記述できる強力なプログラミング技法です。' },
+        { department: 'programming', level: 1, question: 'あるクラス（設計図）を元にして、メモリ上に生成された実体のことを何というか？', options: ['インスタンス', 'メソッド', 'プロパティ', 'コンストラクタ'], answer: 'インスタンス', hint: '「実体」とも訳されます。', explanation: '一つのクラスから複数のインスタンスを生成することができます。たい焼きの型がクラスで、焼かれたたい焼きがインスタンスに例えられます。' },
+        { department: 'programming', level: 1, question: 'データの先頭から順番に目的のデータを探すアルゴリズムは？', options: ['線形探索法', '二分探索法', 'ハッシュ法', '木構造探索'], answer: '線形探索法', hint: '最も単純で基本的な探索方法です。', explanation: '線形探索法は、整列されていないデータに対しても使用できますが、データ数が多いと時間がかかるという欠点があります。' },
+        { department: 'programming', level: 1, question: '整列済みのデータの中央値と比較し、探索範囲を半分に絞りながら目的のデータを見つけるアルゴリズムは？', options: ['二分探索法', '線形探索法', '全数探索法', 'ハッシュ法'], answer: '二分探索法', hint: '辞書で単語を探す方法に似ています。', explanation: '二分探索法は、線形探索法に比べて非常に高速ですが、データが予めソートされている必要があります。' }
     ];
+
+    const levelOptions = {
+        business: [
+            { value: '3', text: '3級' },
+            { value: '2', text: '2級' },
+            { value: '1', text: '1級' }
+        ],
+        programming: [
+            { value: '2', text: '2級' },
+            { value: '1', text: '1級' }
+        ]
+    };
 
     let currentQuestions = [];
     let currentQuestionIndex = 0;
@@ -284,6 +333,7 @@
     const hintBtn = document.getElementById('hint-btn');
     const hintTextEl = document.getElementById('hint-text');
 
+    departmentSelect.addEventListener('change', updateLevelOptions);
     startBtn.addEventListener('click', startQuiz);
     nextBtn.addEventListener('click', nextQuestion);
     restartBtn.addEventListener('click', () => {
@@ -294,23 +344,37 @@
         hintTextEl.style.display = 'block';
     });
 
+    function updateLevelOptions() {
+        const selectedDepartment = departmentSelect.value;
+        levelSelect.innerHTML = ''; 
+
+        levelOptions[selectedDepartment].forEach(optionInfo => {
+            const option = document.createElement('option');
+            option.value = optionInfo.value;
+            option.textContent = optionInfo.text;
+            levelSelect.appendChild(option);
+        });
+    }
+
     function startQuiz() {
         const selectedDepartment = departmentSelect.value;
         const selectedLevel = parseInt(levelSelect.value);
 
-        // データベースから条件に合う問題を全て抽出
         let availableQuestions = quizDatabase.filter(q => q.department === selectedDepartment && q.level === selectedLevel);
         
-        if(availableQuestions.length < 10){
-            alert('申し訳ありません。このカテゴリには10問以上の問題がありません。\n（現在 ' + availableQuestions.length + ' 問）');
-            if (availableQuestions.length === 0) return;
+        if(availableQuestions.length === 0){
+            alert('申し訳ありません。選択された条件に合う問題がありません。');
+            return;
         }
 
-        // 問題をシャッフル
         availableQuestions = shuffleArray(availableQuestions);
-        // シャッフルした問題から最大10問を抽出
+        
         currentQuestions = availableQuestions.slice(0, 10);
         
+        if(currentQuestions.length < 10) {
+             console.warn(`Warning: Fewer than 10 questions (${currentQuestions.length}) available for the selected category.`);
+        }
+
         currentQuestionIndex = 0;
         score = 0;
 
@@ -325,10 +389,9 @@
         resetState();
         const question = currentQuestions[currentQuestionIndex];
         questionCounterEl.textContent = `第 ${currentQuestionIndex + 1} 問 / ${currentQuestions.length} 問`;
-        questionEl.textContent = question.question;
-        hintTextEl.textContent = `ヒント: ${question.hint}`;
+        questionEl.innerHTML = question.question;
+        hintTextEl.innerHTML = `ヒント: ${question.hint}`;
         
-        // 選択肢もランダムに表示
         const shuffledOptions = shuffleArray([...question.options]);
 
         shuffledOptions.forEach(option => {
@@ -394,7 +457,7 @@
         let message = '';
         const percentage = score / currentQuestions.length;
         if(percentage === 1){
-            message = '素晴らしい！全問正解です！この調子で頑張りましょう！';
+            message = '素晴らしい！全問正解です！この調子で合格を目指しましょう！';
         } else if (percentage >= 0.8){
             message = '高得点です！間違えた問題を復習すれば、合格は目前です。';
         } else if (percentage >= 0.5){
@@ -412,6 +475,8 @@
         }
         return array;
     }
+    
+    document.addEventListener('DOMContentLoaded', updateLevelOptions);
 
 </script>
 </body>
