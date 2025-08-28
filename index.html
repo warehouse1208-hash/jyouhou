@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全商情報処理検定 直前チェックテスト【超・完全版】</title>
+    <title>全商情報処理検定 小テストジェネレーター</title>
     <style>
+        /* --- 画面表示用スタイル --- */
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
@@ -31,7 +32,7 @@
             border-bottom: 2px solid #0056b3;
             padding-bottom: 10px;
             font-size: 1.8em;
-            margin-top: 20px; /* ロゴとの間隔調整 */
+            margin-top: 20px;
         }
         #setup, #quiz, #results {
             margin-top: 20px;
@@ -46,7 +47,7 @@
         }
         #setup-header p {
             font-size: 1.1em;
-            color: #d9534f; /* ロゴの赤色に合わせる */
+            color: #d9534f;
             font-weight: bold;
         }
         #question {
@@ -82,18 +83,11 @@
         .btn:active {
             transform: scale(0.98);
         }
-        .btn.correct {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-            color: #155724;
+        .btn.correct, .btn.incorrect {
             font-weight: bold;
         }
-        .btn.incorrect {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-            font-weight: bold;
-        }
+        .btn.correct { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .btn.incorrect { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
         .feedback {
             margin-top: 20px;
             padding: 15px;
@@ -101,14 +95,8 @@
             text-align: left;
             border: 1px solid #ccc;
         }
-        #explanation {
-            background-color: #fff3cd;
-            border-color: #ffeeba;
-        }
-        #hint-container {
-            margin: 15px 0;
-            text-align: right;
-        }
+        #explanation { background-color: #fff3cd; border-color: #ffeeba; }
+        #hint-container { margin: 15px 0; text-align: right; }
         #hint-btn {
             background-color: #17a2b8;
             color: white;
@@ -118,9 +106,7 @@
             border: none;
             transition: background-color 0.3s;
         }
-        #hint-btn:hover {
-            background-color: #138496;
-        }
+        #hint-btn:hover { background-color: #138496; }
         #hint-text {
             display: none;
             margin-top: 10px;
@@ -136,27 +122,113 @@
             border-radius: 8px;
             border: 1px solid #ccc;
         }
-        #start-btn, #next-btn, #restart-btn {
-            background-color: #28a745;
+        #start-btn, #pdf-btn, #next-btn, #restart-btn {
             color: white;
             cursor: pointer;
-            width: 60%;
+            width: 45%; 
             margin-top: 20px;
             border: none;
             transition: background-color 0.3s;
             font-weight: bold;
         }
-        #start-btn:hover {
-            background-color: #218838;
+        #start-btn { background-color: #28a745; }
+        #start-btn:hover { background-color: #218838; }
+        #pdf-btn { background-color: #d9534f; }
+        #pdf-btn:hover { background-color: #c9302c; }
+        #next-btn, #restart-btn { background-color: #007bff; }
+        #next-btn:hover, #restart-btn:hover { background-color: #0069d9; }
+        #results h2 { color: #28a745; }
+
+        /* --- 印刷用スタイル --- */
+        #printable-area {
+            display: none;
+            font-family: 'Hiragino Mincho ProN', 'MS Mincho', serif;
+            color: #000;
         }
-        #next-btn, #restart-btn {
-            background-color: #007bff;
+        .print-page {
+            width: 100%;
+            height: 100%;
+            page-break-after: always;
         }
-        #next-btn:hover, #restart-btn:hover {
-            background-color: #0069d9;
+        .print-page:last-child {
+            page-break-after: auto;
         }
-        #results h2 {
-            color: #28a745;
+        .print-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid black;
+            padding-bottom: 10px;
+        }
+        .print-header h2 {
+            margin: 0;
+            font-size: 16pt;
+        }
+        .print-info-table {
+            border-collapse: collapse;
+            border: 2px solid black;
+            font-size: 10pt;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .print-info-table td {
+            border: 1px solid black;
+            padding: 2px 8px;
+            height: 25px;
+        }
+        .print-info-table td.label {
+            background-color: #f2f2f2;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .print-info-table td.value-name {
+            width: 40%;
+        }
+        .print-main-content {
+            margin-top: 10px;
+        }
+        .print-question-block {
+            margin-top: 12px;
+            font-size: 9.5pt; /* 少しフォントを小さくして調整 */
+        }
+        .print-question-block p {
+            margin: 0;
+            margin-bottom: 2px;
+        }
+        .print-options {
+            list-style-type: none;
+            padding-left: 15px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .print-options li {
+            width: 50%;
+            margin-bottom: 1px;
+        }
+        .answer-box {
+            font-weight: bold;
+            margin-left: 20px;
+        }
+        #print-answers h3 {
+             border-bottom: 1px solid #000;
+             padding-bottom: 5px;
+             text-align: center;
+        }
+        #print-answers ol {
+            font-size: 12pt;
+        }
+
+        @page {
+            size: B5;
+            margin: 15mm;
+        }
+        @media print {
+            body > *:not(#printable-area) {
+                display: none;
+            }
+            #printable-area {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -165,19 +237,22 @@
 <div class="container">
     <div id="setup">
         <div id="setup-header">
-            <img src="http://googleusercontent.com/file_content/1" alt="KOKOKU HIGH SCHOOL Logo">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAAAAAXNSR0IArs4c6QAAIABJREFUeF7snQeYFNV1/z/vTA/pSRBCGgJCSElVVAREBBERuyAu2FtERF0XRRHdimARxKoCi+C+u64gKogoqaiIqJISghBCSDvpvfP+M1/X3T19M72zAiE83/f1cM7OzjTz7szu+c53vvOdDUY01w8aJcE8yYQ1CAn9aJgEy9rA+q/9pB7GjN2wF5+pD1O5G3IeI2cxd5xW/6z/Wf/a1m8P3A+J70mI35L4nsT4LpMBeTKF8mXf8T/5hP/Ld+wH/m0/8t3681uVn9jMhLzJSS/LKE/L+E7L2E7P2E47/7U/b+UvP+U/b8k77+n7P2n5/2n7/2n/7mn7Pmn58Wn5fmn/8Wn7/mn/8Wn/8mn/+Wn/+Wn/+mn/8mn/+Wn/+Gn/+mX/+Gn/+mn/+Gn/+Gn/+Wn/+mH/+mX/+HH/+mX/+Gn/5HH/+HH/8Gn/+mH+A8c0R6O6G/rRj1iA27JkLz7hO69xOm9xPO+xPO/5eU/y85719y3r/kvH/Jef+S8/4l5/1LzvuXnPenP+9Pe96f/rx/6fP/pc/+lz/6X/7of/kj/+WP/p/Y/5/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/Y/4/t-logo.png" alt="KOKOKU HIGH SCHOOL Logo">
             <p>ITビジネス科オリジナル</p>
         </div>
-        <h1>全商情報処理検定<br>直前チェックテスト【超・完全版】</h1>
+        <h1>全商情報処理検定<br>小テストジェネレーター</h1>
         <h2>設定</h2>
-        <p>部門と級を選択して、テストを開始してください。</p>
+        <p>部門と級を選択してください。</p>
         <select id="department">
             <option value="business">ビジネス情報部門</option>
             <option value="programming">プログラミング部門</option>
         </select>
         <select id="level">
             </select>
-        <button id="start-btn">ランダム10問テスト開始</button>
+        <div>
+            <button id="start-btn">学習モード開始</button>
+            <button id="pdf-btn">B5サイズでPDF出力</button>
+        </div>
     </div>
 
     <div id="quiz" style="display:none;">
@@ -199,6 +274,8 @@
         <button id="restart-btn">もう一度挑戦する</button>
     </div>
 </div>
+
+<div id="printable-area"></div>
 
 <script>
     // PDFの全範囲を元に作成した問題データベース
@@ -320,6 +397,7 @@
     const resultsEl = document.getElementById('results');
 
     const startBtn = document.getElementById('start-btn');
+    const pdfBtn = document.getElementById('pdf-btn');
     const nextBtn = document.getElementById('next-btn');
     const restartBtn = document.getElementById('restart-btn');
     
@@ -332,9 +410,11 @@
     const explanationEl = document.getElementById('explanation');
     const hintBtn = document.getElementById('hint-btn');
     const hintTextEl = document.getElementById('hint-text');
+    const printableAreaEl = document.getElementById('printable-area');
 
     departmentSelect.addEventListener('change', updateLevelOptions);
     startBtn.addEventListener('click', startQuiz);
+    pdfBtn.addEventListener('click', generatePdf);
     nextBtn.addEventListener('click', nextQuestion);
     restartBtn.addEventListener('click', () => {
         resultsEl.style.display = 'none';
@@ -356,25 +436,94 @@
         });
     }
 
-    function startQuiz() {
+    function getSelectedQuizData() {
         const selectedDepartment = departmentSelect.value;
         const selectedLevel = parseInt(levelSelect.value);
-
         let availableQuestions = quizDatabase.filter(q => q.department === selectedDepartment && q.level === selectedLevel);
         
         if(availableQuestions.length === 0){
             alert('申し訳ありません。選択された条件に合う問題がありません。');
-            return;
+            return null;
         }
-
         availableQuestions = shuffleArray(availableQuestions);
-        
-        currentQuestions = availableQuestions.slice(0, 10);
-        
-        if(currentQuestions.length < 10) {
-             console.warn(`Warning: Fewer than 10 questions (${currentQuestions.length}) available for the selected category.`);
-        }
+        return availableQuestions.slice(0, 10);
+    }
 
+    function generatePdf() {
+        const questionsForPdf = getSelectedQuizData();
+        if (!questionsForPdf) return;
+
+        const deptText = departmentSelect.options[departmentSelect.selectedIndex].text;
+        const levelText = levelSelect.options[levelSelect.selectedIndex].text;
+        const today = new Date();
+        const dateString = `${today.getFullYear()} 年 ${today.getMonth() + 1} 月 ${today.getDate()} 日`;
+        
+        // --- 問題用紙のHTMLを作成 ---
+        let testSheetHtml = `<div class="print-page">`;
+        testSheetHtml += `
+            <div class="print-header">
+                <h2>全商情報処理検定 小テスト (${deptText} ${levelText})</h2>
+            </div>
+            <table class="print-info-table">
+                <tr>
+                    <td class="label">学年</td><td class="value"></td>
+                    <td class="label">出席番号</td><td class="value"></td>
+                    <td class="label">名前</td><td class="value value-name"></td>
+                </tr>
+                <tr>
+                    <td class="label">日付</td><td class="value" colspan="2">${dateString}</td>
+                    <td class="label">得点</td><td class="value" colspan="2"></td>
+                </tr>
+            </table>`;
+        
+        testSheetHtml += `<div class="print-main-content">`;
+        let answersForSheet = {}; // 解答欄用に正解を保持
+        const optionsLabels = ['ア', 'イ', 'ウ', 'エ'];
+
+        questionsForPdf.forEach((q, index) => {
+            testSheetHtml += `<div class="print-question-block">`;
+            testSheetHtml += `<p><strong>第${index + 1}問.</strong> ${q.question}</p>`;
+            testSheetHtml += `<ol class="print-options">`;
+            
+            const shuffledOptions = shuffleArray([...q.options]);
+            
+            shuffledOptions.forEach((opt, optIndex) => {
+                const label = optionsLabels[optIndex];
+                testSheetHtml += `<li>${label}. ${opt}</li>`;
+                if (opt === q.answer) {
+                    answersForSheet[index + 1] = { label: label, text: q.answer };
+                }
+            });
+            testSheetHtml += `</ol>`;
+            testSheetHtml += `<div class="answer-box">解答：(  )</div>`; // 解答を書き込む欄
+            testSheetHtml += `</div>`;
+        });
+        testSheetHtml += `</div>`;
+        testSheetHtml += `</div>`; // .print-page 終了
+
+
+        // --- 解答用紙のHTMLを作成 ---
+        let answerKeyHtml = `<div class="print-page">`;
+         answerKeyHtml += `
+            <div class="print-header">
+                <h2>全商情報処理検定 小テスト (${deptText} ${levelText}) - 解答</h2>
+            </div>`;
+        answerKeyHtml += `<div id="print-answers"><h3>解答</h3><ol>`;
+        
+        for (let i = 1; i <= 10; i++) {
+             answerKeyHtml += `<li>第${i}問: ${answersForSheet[i].label} (${answersForSheet[i].text})</li>`;
+        }
+        answerKeyHtml += `</ol></div></div>`;
+
+        printableAreaEl.innerHTML = testSheetHtml + answerKeyHtml;
+        window.print();
+    }
+
+
+    function startQuiz() {
+        currentQuestions = getSelectedQuizData();
+        if(!currentQuestions) return;
+        
         currentQuestionIndex = 0;
         score = 0;
 
